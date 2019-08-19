@@ -1,0 +1,54 @@
+stages:
+  - archive
+  - app
+
+variables:
+  XCODE_WORKSPACE: MacSymbolicator.xcworkspace
+  XCODE_SCHEME: MacSymbolicator
+  XCODE_CONFIGURATION: Release
+  # Keychain to which we reset at the end of each build
+  KEYCHAIN_DEFAULT: "login.keychain"
+  # Keychain used for building (has code-signing certs, dont put it under version control)
+  KEYCHAIN_SIGNING: "Builds.keychain"
+
+# Common commands for resetting the keychain state after a build
+.keychain-common:
+  after_script:
+    - /usr/bin/security lock-keychain "${KEYCHAIN_SIGNING}"
+    - /usr/bin/security list-keychains -d user -s "${KEYCHAIN_DEFAULT}"
+
+# Common commands for setting up keychain for code signing
+.code-signing:
+  extends: .keychain-common
+  before_script:
+    - /usr/bin/security list-keychains -d user -s "${KEYCHAIN_SIGNING}" # For signing, use the builds keychain
+    - /usr/bin/security unlock-keychain -p "${FSW_BUILDS_KEYCHAIN_PASSWORD}" "${KEYCHAIN_SIGNING}"
+
+archive:
+  extends: .code-signing
+  stage: archive
+  tags:
+    - macOS-SDK-10.14
+  script:
+    - /usr/local/bin/pod --silent install
+    - /usr/bin/xcodebuild -workspace "${XCODE_WORKSPACE}" -scheme "${XCODE_SCHEME}" -configuration "${XCODE_CONFIGURATION}" -archivePath "${XCODE_SCHEME}-${CI_PIPELINE_IID}-${XCODE_CONFIGURATION}.xcarchive" archive
+  artifacts:
+    when: always
+    name: "${XCODE_SCHEME}-${CI_PIPELINE_IID}-${XCODE_CONFIGURATION}-archive"
+    paths:
+      - "${XCODE_SCHEME}-${CI_PIPELINE_IID}-${XCODE_CONFIGURATION}.xcarchive"
+
+app:
+  extends: .code-signing
+  stage: app
+  tags:
+    - macOS-SDK-10.14
+  script:
+    - /usr/bin/xcodebuild -exportArchive -exportOptionsPlist "MacSymbolicator/ArchiveOptions-${XCODE_CONFIGURATION}.plist" -archivePath "${XCODE_SCHEME}-${CI_PIPELINE_IID}-${XCODE_CONFIGURATION}.xcarchive" -exportPath "."
+    - /usr/bin/ditto -c -k --keepParent "MacSymbolicator.app" "MacSymbolicator.zip"
+
+  artifacts:
+    name: "${XCODE_SCHEME}-${CI_PIPELINE_IID}-${XCODE_CONFIGURATION}-app"
+    paths:
+      - MacSymbolicator.zip
+    when: always
