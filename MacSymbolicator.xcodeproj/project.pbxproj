@@ -24,6 +24,7 @@
 		B2DC6C6F1868D52D0058D578 /* DSYMFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B2DC6C6E1868D52D0058D578 /* DSYMFile.m */; };
 		B2DC6C72186910D20058D578 /* MBCrashReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = B2DC6C71186910D20058D578 /* MBCrashReporter.m */; };
 		B2DC6C78186922CB0058D578 /* NSApplication+FixedWindowMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = B2DC6C77186922CB0058D578 /* NSApplication+FixedWindowMenu.m */; };
+		B59411BA230B447500C2AD70 /* ArchiveOptions-Release.plist in Resources */ = {isa = PBXBuildFile; fileRef = B59411B9230B447500C2AD70 /* ArchiveOptions-Release.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,8 @@
 		B2DC6C71186910D20058D578 /* MBCrashReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBCrashReporter.m; sourceTree = "<group>"; };
 		B2DC6C76186922CB0058D578 /* NSApplication+FixedWindowMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSApplication+FixedWindowMenu.h"; sourceTree = "<group>"; };
 		B2DC6C77186922CB0058D578 /* NSApplication+FixedWindowMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+FixedWindowMenu.m"; sourceTree = "<group>"; };
+		B59411B7230B41D100C2AD70 /* gitlab-ci.yml */ = {isa = PBXFileReference; lastKnownFileType = text; name = "gitlab-ci.yml"; path = "../gitlab-ci.yml"; sourceTree = "<group>"; };
+		B59411B9230B447500C2AD70 /* ArchiveOptions-Release.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ArchiveOptions-Release.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +85,6 @@
 				817B34588C407B62AD9B218B /* Pods-MacSymbolicator.debug.xcconfig */,
 				2C946E381F14C73C5AA9599F /* Pods-MacSymbolicator.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -159,9 +161,11 @@
 			isa = PBXGroup;
 			children = (
 				B207F41F17DB0F240009F307 /* MacSymbolicator-Info.plist */,
+				B59411B7230B41D100C2AD70 /* gitlab-ci.yml */,
 				B207F42017DB0F240009F307 /* InfoPlist.strings */,
 				B207F42317DB0F240009F307 /* main.m */,
 				B207F42517DB0F240009F307 /* MacSymbolicator-Prefix.pch */,
+				B59411B9230B447500C2AD70 /* ArchiveOptions-Release.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -221,12 +225,19 @@
 			attributes = {
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = inket;
+				TargetAttributes = {
+					B207F41317DB0F240009F307 = {
+						DevelopmentTeam = BXJFHF532H;
+						ProvisioningStyle = Manual;
+					};
+				};
 			};
 			buildConfigurationList = B207F40F17DB0F240009F307 /* Build configuration list for PBXProject "MacSymbolicator" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -245,6 +256,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B59411BA230B447500C2AD70 /* ArchiveOptions-Release.plist in Resources */,
 				B2509D4C18F88A4B001A92A7 /* dsa_pub.pem in Resources */,
 				B2DC6C691868C9200058D578 /* symbolicate.rb in Resources */,
 				B207F42217DB0F240009F307 /* InfoPlist.strings in Resources */,
@@ -430,7 +442,10 @@
 			baseConfigurationReference = 817B34588C407B62AD9B218B /* Pods-MacSymbolicator.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = BXJFHF532H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -441,6 +456,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "me.inket.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -450,7 +466,10 @@
 			baseConfigurationReference = 2C946E381F14C73C5AA9599F /* Pods-MacSymbolicator.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = BXJFHF532H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -461,6 +480,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "me.inket.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
